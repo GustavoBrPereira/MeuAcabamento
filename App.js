@@ -1,8 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-import { View } from 'react-native';
+import { SafeAreaView, StatusBar} from 'react-native';
 import Login from './src/pages/Login';
 import Projects from './src/pages/Projects';
 
@@ -17,9 +17,11 @@ export default function App() {
   if(fontsLoaded) {
     return (
       <>
-        <StatusBar style="auto" />
-        {/* <Login /> */}
-        <Projects />
+        <StatusBar backgroundColor="#FF13A6" barStyle="light-content"/> 
+        {/* <SafeAreaView style={{flex: 1, backgroundColor: '#FFF'}}> */}
+          {/* <Login /> */}
+          <Projects />
+        {/* </SafeAreaView> */}
       </>
     );
   } else {

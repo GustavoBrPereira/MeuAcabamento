@@ -1,15 +1,17 @@
+import { Platform } from 'react-native';
 import styled from 'styled-components/native';
-import { metrics } from '../../styles/metrics.js';
+
+const paddingTop = Platform.OS === 'ios' ? 20 : 0;
+
 
 const Menu = styled.View`
     background-color: #FF13A7;
-    height: ${metrics.headerHeight}px;
-    padding-top: ${metrics.headerPadding}px;
-    padding-left: ${metrics.padding}px;
-    padding-right: ${metrics.padding}px;
+    height: 80px;
+    padding: 0px 15px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-top: ${paddingTop}px;
 `;
 
 export default Menu;
