@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Menu from '../../components/Menu';
 import { MaterialIcons } from '@expo/vector-icons';
 import Title from '../../components/Menu/Title';
 import ProjectBox, { Container, ProjectBoxTitle, 
     ProjectTitle, IconAddBox } from '../../components/ProjectBox';
-import Pagination from '../../components/ProjectBox/PaginateProjects';
+import Pagination, { ListPages } from '../../components/ProjectBox/PaginateProjects';
 
 function Projects() {
+    const [pagination, setPagination] = useState(false);
+    const [page, setPage] = useState(1);
+
     const numberOfProjects = [1, 2, 3, 4, 5,
-        6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+        6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 
+        // 31, 32, 33, 34, 35,
+        // 36, 37, 38, 39, 40
+
     ];
 
+    useEffect(() => {
+        if(numberOfProjects.length > 5) {
+        setPagination(true)
+        }
+        setPage(1)
+        console.log(pagination)
+
+    }, [])
+
+    
+    
     let perPage = 5
     const state = {
-        page: 1,
+        page,
         perPage,
         totalPage: Math.ceil( numberOfProjects.length / perPage )
     }
@@ -24,19 +43,11 @@ function Projects() {
     const projectsPerPage = numberOfProjects.slice(start, end);
 
     const controls = {
-        next() {
-            state.page++;
-
-            if(state.page > state.totalPage) {
-                state.page--;
-            }
+        first() {
+            setPage(1)
         },
-        prev() {
-            state.page--;
-
-            if(state.page < 1) {
-                state.page++
-            }
+        last() {
+            setPage(state.totalPage)
         },
         goTo(page) {
             if(page < 1) {
@@ -44,6 +55,8 @@ function Projects() {
             }
 
             state.page = page
+            setPage(page)
+            console.log(page)
             
 
             if(page > state.totalPage) {
@@ -52,9 +65,34 @@ function Projects() {
         }
     }
 
-    console.log(state.page)
-    controls.prev()
-    console.log(state.page)
+    
+
+    function showPages(controls) {
+        
+            const numbersPages = []
+            for(let p=0; p<state.totalPage; p++) {
+                numbersPages.push(p);
+            }
+
+            let pagesShowed = 0
+            
+            return(
+                <>
+                    {numbersPages.map(item => (
+                            <ListPages 
+                                key={`id_${item}`}
+                                onPress={() => controls.goTo(item + 1) }
+                            > 
+                                {item + 1}
+                            </ListPages>
+                        )
+                    )}
+                </>
+            )
+        
+    }
+
+
 
 
     function AdjustLayout() {
@@ -75,7 +113,7 @@ function Projects() {
         );
     }
     
-
+    
 
 
     return (
@@ -89,15 +127,7 @@ function Projects() {
 
             <Container>
 
-                <Pagination>
-                    <MaterialIcons name="first-page" size={35} color="#408fb7" />
-                    <MaterialIcons name="chevron-left" size={35} color="#408fb7" />
-
-                    
-
-                    <MaterialIcons name="chevron-right" size={35} color="#408fb7" />
-                    <MaterialIcons name="last-page" size={35} color="#408fb7" />
-                </Pagination>
+                
 
                 {projectsPerPage.map(item => (
                     <ProjectBox key={`id_${item}`}>
@@ -112,6 +142,26 @@ function Projects() {
                 <IconAddBox>
                     <MaterialIcons name="add-circle" color="#FFDE1D" size={100} />
                 </IconAddBox>
+
+                {pagination ? 
+                        <Pagination>
+                            <MaterialIcons 
+                                name="first-page" 
+                                size={28} 
+                                color="#408fb7" 
+                                onPress={() => controls.first()}
+                            />
+                        
+                            {showPages(controls)}
+
+                            <MaterialIcons 
+                                name="last-page" 
+                                size={28} 
+                                color="#408fb7"
+                                onPress={() => controls.last()} 
+                            />
+                        </Pagination>
+                : null}
                
             </Container>
 

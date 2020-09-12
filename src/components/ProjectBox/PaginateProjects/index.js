@@ -11,7 +11,8 @@ const Pagination = styled.View`
 
 export const ListPages = styled.Text`
     color: #408fb7;
-    font-size: 30px; 
+    font-size: 25px; 
+    margin: 0px 5px;
 `;
 
 
