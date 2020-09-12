@@ -7,31 +7,67 @@ import ProjectBox, { Container, ProjectBoxTitle,
 import Pagination from '../../components/ProjectBox/PaginateProjects';
 
 function Projects() {
-    const items = [1, 2, 3, 4, 5,
+    const numberOfProjects = [1, 2, 3, 4, 5,
         6, 7, 8, 9, 10, 11, 12, 13, 14, 15
     ];
 
+    let perPage = 5
     const state = {
         page: 1,
-        perPage: 5
+        perPage,
+        totalPage: Math.ceil( numberOfProjects.length / perPage )
     }
 
-    const page = state.page - 1
-    const start = page * state.perPage
+    const firstElementToShowPosition = state.page - 1
+    const start = firstElementToShowPosition * state.perPage
     const end = start + state.perPage
-    const paginateItems = items.slice(start, end);
+    const projectsPerPage = numberOfProjects.slice(start, end);
+
+    const controls = {
+        next() {
+            state.page++;
+
+            if(state.page > state.totalPage) {
+                state.page--;
+            }
+        },
+        prev() {
+            state.page--;
+
+            if(state.page < 1) {
+                state.page++
+            }
+        },
+        goTo(page) {
+            if(page < 1) {
+               page = 1
+            }
+
+            state.page = page
+            
+
+            if(page > state.totalPage) {
+                state.page = state.totalPage;
+            }
+        }
+    }
+
+    console.log(state.page)
+    controls.prev()
+    console.log(state.page)
+
 
     function AdjustLayout() {
-        const numbersBox = 5 - paginateItems.length
+        const emptyBoxes = 5 - projectsPerPage.length
 
-        const additionalBox = []
-        for (i=0; i<numbersBox; i++) {
-            additionalBox.push(i);
+        const additionalBoxes = []
+        for (i=0; i<emptyBoxes; i++) {
+            additionalBoxes.push(i);
         }
 
         return(
             <>
-                {additionalBox.map(item => (
+                {additionalBoxes.map(item => (
                     <IconAddBox style={{backgroundColor: 'transparent' }} key={`id_${item}`} />
                 ))
                 }
@@ -53,9 +89,17 @@ function Projects() {
 
             <Container>
 
-                <Pagination />
+                <Pagination>
+                    <MaterialIcons name="first-page" size={35} color="#408fb7" />
+                    <MaterialIcons name="chevron-left" size={35} color="#408fb7" />
 
-                {paginateItems.map(item => (
+                    
+
+                    <MaterialIcons name="chevron-right" size={35} color="#408fb7" />
+                    <MaterialIcons name="last-page" size={35} color="#408fb7" />
+                </Pagination>
+
+                {projectsPerPage.map(item => (
                     <ProjectBox key={`id_${item}`}>
                         <ProjectBoxTitle>
                             <ProjectTitle>Projeto {item}</ProjectTitle>
