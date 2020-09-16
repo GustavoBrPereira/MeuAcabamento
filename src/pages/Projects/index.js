@@ -14,8 +14,8 @@ function Projects() {
         6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
         16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
         26, 27, 28, 29, 30, 
-        // 31, 32, 33, 34, 35,
-        // 36, 37, 38, 39, 40
+        31, 32, 33, 34, 35,
+        36, 37, 38, 39, 40
 
     ];
 
@@ -24,7 +24,7 @@ function Projects() {
         setPagination(true)
         }
         setPage(1)
-        console.log(pagination)
+        console.log(numberOfProjects.length)
 
     }, [])
 
@@ -34,13 +34,53 @@ function Projects() {
     const state = {
         page,
         perPage,
-        totalPage: Math.ceil( numberOfProjects.length / perPage )
+        totalPage: Math.ceil( numberOfProjects.length / perPage ),
+        maxVisibleButtons: 5
     }
 
-    const firstElementToShowPosition = state.page - 1
-    const start = firstElementToShowPosition * state.perPage
-    const end = start + state.perPage
-    const projectsPerPage = numberOfProjects.slice(start, end);
+    const buttons ={
+        calculateProjectsVisible() {
+            const firstElementToShowPosition = state.page - 1
+            const start = firstElementToShowPosition * state.perPage
+            const end = start + state.perPage
+            const projectsPerPage = numberOfProjects.slice(start, end);
+
+            return projectsPerPage;
+        },
+        calculateMaxVisibleButtons() {
+            const { maxVisibleButtons } = state
+            let maxLeft = (state.page - Math.floor(maxVisibleButtons / 2));
+            let maxRight = (state.page + Math.floor(maxVisibleButtons / 2));
+
+            if(maxLeft < 1){
+                maxLeft = 1
+                maxRight = maxVisibleButtons
+            }
+
+            if(maxRight > state.totalPage) {
+                maxLeft = state.totalPage - ( maxVisibleButtons - 1 )
+                maxRight = state.totalPage
+
+                if(maxLeft < 1) maxLeft = 1
+            }
+
+            return { maxLeft, maxRight };
+        },
+        update() {
+            const { maxLeft, maxRight } = buttons.calculateMaxVisibleButtons()
+            let pagesToShow = []
+            
+            for(let page = maxLeft; page <= maxRight; page++){
+                pagesToShow.push(page);
+            }
+
+            return pagesToShow
+        }
+    }
+
+
+    const pagesToShow = buttons.update()
+    const projectsPerPage = buttons.calculateProjectsVisible()
 
     const controls = {
         first() {
@@ -56,12 +96,13 @@ function Projects() {
 
             state.page = page
             setPage(page)
-            console.log(page)
             
 
             if(page > state.totalPage) {
                 state.page = state.totalPage;
             }
+            buttons.update()
+
         }
     }
 
@@ -73,8 +114,6 @@ function Projects() {
             for(let p=0; p<state.totalPage; p++) {
                 numbersPages.push(p);
             }
-
-            let pagesShowed = 0
             
             return(
                 <>
@@ -152,7 +191,16 @@ function Projects() {
                                 onPress={() => controls.first()}
                             />
                         
-                            {showPages(controls)}
+                            {/* {showPages(controls)} */}
+                            {pagesToShow.map(item => (
+                                    <ListPages 
+                                        key={`id_${item}`}
+                                        onPress={() => controls.goTo(item) }
+                                    > 
+                                        {item}
+                                    </ListPages>
+                                )
+                            )}
 
                             <MaterialIcons 
                                 name="last-page" 
