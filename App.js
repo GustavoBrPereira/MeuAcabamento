@@ -17,10 +17,10 @@ export default function App() {
   if(fontsLoaded) {
     return (
       <>
-        <StatusBar backgroundColor="#FF13A6" barStyle="light-content"/> 
+        <StatusBar backgroundColor="#ffde1d" barStyle="dark-content"/> 
         {/* <SafeAreaView style={{flex: 1, backgroundColor: '#FFF'}}> */}
-          {/* <Login /> */}
-          <Projects />
+          <Login />
+          {/* <Projects /> */}
         {/* </SafeAreaView> */}
       </>
     );

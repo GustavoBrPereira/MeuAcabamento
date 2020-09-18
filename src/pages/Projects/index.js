@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Menu from '../../components/Menu';
 import { MaterialIcons } from '@expo/vector-icons';
 import Title from '../../components/Menu/Title';
+
 import ProjectBox, { Container, ProjectBoxTitle, 
     ProjectTitle, IconAddBox } from '../../components/ProjectBox';
+
 import Pagination, { ListPages } from '../../components/ProjectBox/PaginateProjects';
 
 function Projects() {
@@ -24,7 +26,6 @@ function Projects() {
         setPagination(true)
         }
         setPage(1)
-        console.log(numberOfProjects.length)
 
     }, [])
 
@@ -106,33 +107,6 @@ function Projects() {
         }
     }
 
-    
-
-    function showPages(controls) {
-        
-            const numbersPages = []
-            for(let p=0; p<state.totalPage; p++) {
-                numbersPages.push(p);
-            }
-            
-            return(
-                <>
-                    {numbersPages.map(item => (
-                            <ListPages 
-                                key={`id_${item}`}
-                                onPress={() => controls.goTo(item + 1) }
-                            > 
-                                {item + 1}
-                            </ListPages>
-                        )
-                    )}
-                </>
-            )
-        
-    }
-
-
-
 
     function AdjustLayout() {
         const emptyBoxes = 5 - projectsPerPage.length
@@ -152,8 +126,6 @@ function Projects() {
         );
     }
     
-    
-
 
     return (
         <>
@@ -165,8 +137,6 @@ function Projects() {
             </Menu>
 
             <Container>
-
-                
 
                 {projectsPerPage.map(item => (
                     <ProjectBox key={`id_${item}`}>
@@ -191,7 +161,6 @@ function Projects() {
                                 onPress={() => controls.first()}
                             />
                         
-                            {/* {showPages(controls)} */}
                             {pagesToShow.map(item => (
                                     <ListPages 
                                         key={`id_${item}`}
@@ -212,11 +181,6 @@ function Projects() {
                 : null}
                
             </Container>
-
-            
-            
-
-
         </>
     );
 }

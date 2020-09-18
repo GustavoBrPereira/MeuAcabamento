@@ -3,15 +3,13 @@ import styled from 'styled-components/native';
 const InputLogin = styled.TextInput`
     background-color: #ffde1d;
     color: #FFF;
-    padding-left: 10px;
-    padding-bottom: 10px;
-    padding-top: 5px;
-    padding-right: 5px;
+    padding: 5px 10px;
     border-color: transparent;
     border-radius: 10px;
-    max-width: 280px;
-    max-height: 40px;
+    width: 260px;
+    height: 40px;
     font-size: 25px;
+    margin: 5px 0px
     
 `;
 

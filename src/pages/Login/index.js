@@ -1,30 +1,46 @@
 import React from 'react';
-import InputLogin from '../../components/Input/Login';
+import { LinearGradient } from 'expo-linear-gradient';
+import Logo from '../../components/Image/Logo';
+import LogoImg from '../../assets/logoImg.png';
+import Input from '../../components/Input/Login';
 import Button, { InputText } from '../../components/Button';
-import ProjectBox, { Box, ProjectBoxTitle, ProjectTitle } from '../../components/ProjectBox';
-import InputRegister from '../../components/Input/Register';
-import Menu from '../../components/Menu';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 
 function Login() {
 
-    return (
-        <>
-            <Menu />
+    const Background = ({ children }) => {
+        return (
+            <LinearGradient
+            colors={['#ffde1d', '#FFF']}
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 20
+              }}
+              locations={[0.5, 0.5]}
+              >
+              {children}
+            </LinearGradient>
+        )}
+    
 
-            <InputLogin placeholder={"Login"} placeholderTextColor={'#FFF'}  />
+    return (
+        <Background>
+            <Logo source={LogoImg} />
+
+            <Input placeholder="Login:" placeholderTextColor={'#FFF'} />
+            <Input placeholder="Senha:" placeholderTextColor={'#FFF'} />
+
             <Button>
-                <InputText> Entrar </InputText> 
+                <InputText>Entrar</InputText>
             </Button>
 
-            <ProjectBox>
-                <ProjectBoxTitle>
-                    <ProjectTitle> Project </ProjectTitle>
-                </ProjectBoxTitle>
-            </ProjectBox>
-
-            <InputRegister placeholder={"Nome"} placeholderTextColor={'#8492A6'} />
-        </>
+            <Text style={{fontSize: 15, color: '#7dadce'}} >
+                Ainda não é cadastrado? Registre-se
+            </Text>
+        </Background>
     );
 }
 
