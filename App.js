@@ -6,6 +6,7 @@ import { SafeAreaView, StatusBar} from 'react-native';
 import Login from './src/pages/Login';
 import Projects from './src/pages/Projects';
 import Register from './src/pages/Register';
+import NewProject from './src/pages/NewProject';
 
 const getFonts = () => Font.loadAsync({
   'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
@@ -23,7 +24,8 @@ export default function App() {
 
           {/* <Login /> */}
           {/* <Projects /> */}
-          <Register />
+          {/* <Register /> */}
+          <NewProject />
 
         {/* </SafeAreaView> */}
       </>

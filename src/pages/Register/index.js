@@ -5,23 +5,16 @@ import { MaterialIcons } from '@expo/vector-icons'
 import registerImg from '../../assets/registerImg.png';
 import InputRegister from '../../components/Input/Register';
 import Button, { ButtonText } from '../../components/Button';
-import { KeyboardAvoidingView, Image, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import { KeyboardAvoidingView, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 function Register() {
-
-    const DismissKeyboard = ({ children }) => (
-        <TouchableWithoutFeedback onPress={() => 
-            Keyboard.dismiss()}> {children}
-        </TouchableWithoutFeedback>
-    );
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <KeyboardAvoidingView behavior="position" >
                 <Menu>
                     <MaterialIcons name="menu" size={40} color="#FFF" />
-                        <Title>Cadastro</Title>
-                    <MaterialIcons name="search" size={40} color="#FFF" />
+                    <Title>Cadastro</Title>
                 </Menu>
 
                 <Image source={registerImg} style={{width: 260, height: 260, alignSelf: 'center', marginTop: 10}} />
