@@ -5,6 +5,7 @@ import { AppLoading } from 'expo';
 import { SafeAreaView, StatusBar} from 'react-native';
 import Login from './src/pages/Login';
 import Projects from './src/pages/Projects';
+import Register from './src/pages/Register';
 
 const getFonts = () => Font.loadAsync({
   'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
@@ -17,10 +18,13 @@ export default function App() {
   if(fontsLoaded) {
     return (
       <>
-        <StatusBar backgroundColor="#ffde1d" barStyle="dark-content"/> 
+        <StatusBar backgroundColor="#ff13a6" barStyle="light-content"/> 
         {/* <SafeAreaView style={{flex: 1, backgroundColor: '#FFF'}}> */}
-          <Login />
+
+          {/* <Login /> */}
           {/* <Projects /> */}
+          <Register />
+
         {/* </SafeAreaView> */}
       </>
     );

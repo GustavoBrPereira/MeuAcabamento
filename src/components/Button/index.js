@@ -9,10 +9,11 @@ const Button = styled.TouchableOpacity`
     margin: 10px 0px;
     justify-content: center;
     align-items: center;
+    align-self: center;
 
 `;
 
-export const InputText = styled.Text`
+export const ButtonText = styled.Text`
     color: #FFF;
     font-size: 30px;
 `;

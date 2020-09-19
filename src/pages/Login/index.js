@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Logo from '../../components/Image/Logo';
 import LogoImg from '../../assets/logoImg.png';
 import Input from '../../components/Input/Login';
-import Button, { InputText } from '../../components/Button';
+import Button, { ButtonText } from '../../components/Button';
 import { Text } from 'react-native';
 
 function Login() {
@@ -34,7 +34,7 @@ function Login() {
             <Input placeholder="Senha:" placeholderTextColor={'#FFF'} />
 
             <Button>
-                <InputText>Entrar</InputText>
+                <ButtonText>Entrar</ButtonText>
             </Button>
 
             <Text style={{fontSize: 15, color: '#7dadce'}} >
