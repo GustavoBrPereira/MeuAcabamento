@@ -4,15 +4,20 @@ import Title from '../../components/Menu/Title';
 import { MaterialIcons } from '@expo/vector-icons';
 import InputRegister from '../../components/Input/Register';
 import Button, { ButtonText } from '../../components/Button';
-import { KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, StatusBar } from 'react-native';
 
-function Register() {
+function NewProject({ navigation }) {
 
     return(
+        <>
+        <StatusBar backgroundColor="#ff13a6" barStyle="dark-content" />
+
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <KeyboardAvoidingView behavior="position">
                 <Menu>
-                    <MaterialIcons name="menu" size={40} color="#FFF" />
+                    <MaterialIcons name="arrow-back" size={40} color="#FFF"
+                    onPress={() => navigation.goBack()}
+                    />
                     <Title>Novo Projeto</Title>
                 </Menu>
 
@@ -48,7 +53,8 @@ function Register() {
                 </Button>
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
+        </>
     );
 }
 
-export default Register;
+export default NewProject;

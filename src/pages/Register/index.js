@@ -5,15 +5,18 @@ import { MaterialIcons } from '@expo/vector-icons'
 import registerImg from '../../assets/registerImg.png';
 import InputRegister from '../../components/Input/Register';
 import Button, { ButtonText } from '../../components/Button';
-import { KeyboardAvoidingView, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { KeyboardAvoidingView, Image, Keyboard, TouchableWithoutFeedback, StatusBar } from 'react-native';
 
-function Register() {
+function Register({ navigation }) {
 
     return(
+        <>
+        <StatusBar backgroundColor="#ff13a6" barStyle="light-content" />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <KeyboardAvoidingView behavior="position" >
                 <Menu>
-                    <MaterialIcons name="menu" size={40} color="#FFF" />
+                    <MaterialIcons name="arrow-back" size={40} color="#FFF" 
+                    onPress={() => navigation.goBack() } />
                     <Title>Cadastro</Title>
                 </Menu>
 
@@ -62,6 +65,7 @@ function Register() {
                 </Button>
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
+        </>
     );
 }
 

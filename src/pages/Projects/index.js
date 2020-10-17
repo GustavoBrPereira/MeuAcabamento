@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Menu from '../../components/Menu';
 import { MaterialIcons } from '@expo/vector-icons';
 import Title from '../../components/Menu/Title';
-
 import ProjectBox, { Container, ProjectBoxTitle, 
     ProjectTitle, IconAddBox } from '../../components/ProjectBox';
-
 import Pagination, { ListPages } from '../../components/ProjectBox/PaginateProjects';
+import { StatusBar } from 'react-native';
+import { DrawerActions } from '@react-navigation/native';
+import { useIsDrawerOpen } from '@react-navigation/drawer';
 
-function Projects() {
+
+function Projects({ navigation }) {
     const [pagination, setPagination] = useState(false);
     const [page, setPage] = useState(1);
+
+    const isDrawerOpen = useIsDrawerOpen();
 
     const numberOfProjects = [1, 2, 3, 4, 5,
         6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -129,9 +133,14 @@ function Projects() {
 
     return (
         <>
+        <StatusBar backgroundColor={isDrawerOpen ? '#f6f6f6' : '#ff13a6' } barStyle="dark-content" 
+        animated={true}
+        />
+
             <Menu>
-                <MaterialIcons name="menu" size={40} color="#FFF" />
-                <Title> Projetos </Title>
+                <MaterialIcons name="menu" size={40} color="#FFF"
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer()) } />
+                <Title> Romaneios </Title>
                 <MaterialIcons name="search" size={40} color="#FFF" />
 
             </Menu>
@@ -141,14 +150,14 @@ function Projects() {
                 {projectsPerPage.map(item => (
                     <ProjectBox key={`id_${item}`}>
                         <ProjectBoxTitle>
-                            <ProjectTitle>Projeto {item}</ProjectTitle>
+                            <ProjectTitle>Romaneio {item}</ProjectTitle>
                         </ProjectBoxTitle>
                     </ProjectBox>
                 ))}
 
                 {AdjustLayout()}
 
-                <IconAddBox>
+                <IconAddBox onPress={() => navigation.navigate('NewProject')} >
                     <MaterialIcons name="add-circle" color="#FFDE1D" size={100} />
                 </IconAddBox>
 

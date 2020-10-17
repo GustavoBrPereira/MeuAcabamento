@@ -4,9 +4,11 @@ import Logo from '../../components/Image/Logo';
 import LogoImg from '../../assets/logoImg.png';
 import Input from '../../components/Input/Login';
 import Button, { ButtonText } from '../../components/Button';
-import { Text } from 'react-native';
+import { Text, StatusBar, TouchableOpacity } from 'react-native';
+import Register from '../Register';
 
-function Login() {
+
+function Login({ navigation }) {
 
     const Background = ({ children }) => {
         return (
@@ -27,6 +29,9 @@ function Login() {
     
 
     return (
+        <>
+        <StatusBar backgroundColor="#ffde1d" barStyle="dark-content" />
+
         <Background>
             <Logo source={LogoImg} />
 
@@ -37,10 +42,14 @@ function Login() {
                 <ButtonText>Entrar</ButtonText>
             </Button>
 
-            <Text style={{fontSize: 15, color: '#7dadce'}} >
-                Ainda não é cadastrado? Registre-se
-            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Drawer')}>
+                <Text style={{fontSize: 15, color: '#7dadce'}} >
+                    Ainda não é cadastrado? Registre-se
+                </Text>
+            </TouchableOpacity>
+
         </Background>
+        </>
     );
 }
 

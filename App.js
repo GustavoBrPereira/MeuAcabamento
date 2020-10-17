@@ -2,16 +2,25 @@
 import React, { useState } from 'react';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-import { SafeAreaView, StatusBar} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+
 import Login from './src/pages/Login';
 import Projects from './src/pages/Projects';
-import Register from './src/pages/Register';
 import NewProject from './src/pages/NewProject';
+import Register from './src/pages/Register';
+import Invoice from './src/pages/Invoice';
+import Drawer from './src/pages/Drawer';
 
 const getFonts = () => Font.loadAsync({
   'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
   'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf')
 });
+
+const Stack = createStackNavigator();
+
+
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -19,20 +28,23 @@ export default function App() {
   if(fontsLoaded) {
     return (
       <>
-        <StatusBar backgroundColor="#ff13a6" barStyle="light-content"/> 
-        {/* <SafeAreaView style={{flex: 1, backgroundColor: '#FFF'}}> */}
+        <NavigationContainer>
 
-          {/* <Login /> */}
-          {/* <Projects /> */}
-          {/* <Register /> */}
-          <NewProject />
+        <Stack.Navigator initialRouteName="Login" headerMode="none">
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          
+          <Stack.Screen name="Projects" component={Projects} />
+          <Stack.Screen name="NewProject" component={NewProject} />
+          <Stack.Screen name="Drawer" component={Drawer} />
+        </Stack.Navigator>
 
-        {/* </SafeAreaView> */}
+        </NavigationContainer>
       </>
     );
   } else {
    return (
-    <AppLoading 
+    <AppLoading
       startAsync={getFonts}
       onFinish={() => setFontsLoaded(true)}
     />

@@ -9,7 +9,7 @@ export const Container = styled.View`
 
 `;
 
-const ProjectBox = styled.View`
+const ProjectBox = styled.TouchableOpacity`
     max-width: 180px;
     min-width: 180px;
     max-height: 180px;
