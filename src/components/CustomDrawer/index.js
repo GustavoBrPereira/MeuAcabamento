@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import registerImg from '../../assets/registerImg.png';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
 
 const DrawerContainer = styled.View`
     flex: 1;
     background-color: #f6f6f6;
 `;
 
-const UserArea = styled.View`
+const UserArea = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: 2%;
     margin-left: 1%;
@@ -18,7 +19,7 @@ const UserArea = styled.View`
 const UserImg = styled.Image`
     width: 80px;
     height: 80px;
-    border-radius: 100px;
+    border-radius: 40px;
 `;
 
 const UserInfo = styled.View`
@@ -65,10 +66,8 @@ function CustomDrawer(props) {
     return(
         <DrawerContainer>
             <DrawerContentScrollView {...props} >
-                <UserArea>
-                    <UserImg source={{
-                        uri: "https://4.bp.blogspot.com/-G3OGOFT54yg/UceJC3dQkpI/AAAAAAAAATs/PbO2vgkbmp8/s1600/3fc572aa9e3d11e2bd6422000a9f12df_7.jpg"
-                    }} />
+                <UserArea onPress={() => navigation.navigate('UserAccount')} >
+                    <UserImg source={registerImg} />
                     <UserInfo>
                         <UserName>Gustavo Brito </UserName>
                         <UserEmail>gustavobrito@email.com </UserEmail>

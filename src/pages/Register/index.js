@@ -20,7 +20,9 @@ function Register({ navigation }) {
                     <Title>Cadastro</Title>
                 </Menu>
 
-                <Image source={registerImg} style={{width: 260, height: 260, alignSelf: 'center', marginTop: 10}} />
+                <Image source={{
+                    uri: 'https://gtrainer.com.br/images/foto_default.png'
+                }} style={{width: 260, height: 260, alignSelf: 'center', marginTop: 10}} />
 
                 <InputRegister 
                     placeholder="Nome" placeholderTextColor='#b9bcc1'  

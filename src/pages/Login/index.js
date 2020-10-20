@@ -38,7 +38,7 @@ function Login({ navigation }) {
             <Input placeholder="Login:" placeholderTextColor={'#FFF'} />
             <Input placeholder="Senha:" placeholderTextColor={'#FFF'} />
 
-            <Button>
+            <Button onPress={() => navigation.navigate('Register')}>
                 <ButtonText>Entrar</ButtonText>
             </Button>
 

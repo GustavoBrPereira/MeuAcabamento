@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 const Button = styled.TouchableOpacity`
-    background-color: #5271FF;
+    background-color: ${props => props.delete ? "#ff5454" : "#5271FF"} ;
     border-color: transparent;
     border-radius: 10px;
     width: 260px;
