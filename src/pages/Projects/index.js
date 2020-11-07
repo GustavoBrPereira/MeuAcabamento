@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import Menu from '../../components/Menu';
+import { StatusBar, View, StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import Title from '../../components/Menu/Title';
-import ProjectBox, { Container, ProjectBoxTitle, 
-    ProjectTitle, IconAddBox } from '../../components/ProjectBox';
-import Pagination, { ListPages } from '../../components/ProjectBox/PaginateProjects';
-import { StatusBar } from 'react-native';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useIsDrawerOpen } from '@react-navigation/drawer';
 
+import { paddingTop } from '../../styles/metrics';
 
-function Projects({ navigation }) {
+function Projects() {
     const [pagination, setPagination] = useState(false);
     const [page, setPage] = useState(1);
+
+    const navigation = useNavigation();
 
     const isDrawerOpen = useIsDrawerOpen();
 
@@ -123,7 +121,9 @@ function Projects({ navigation }) {
         return(
             <>
                 {additionalBoxes.map(item => (
-                    <IconAddBox style={{backgroundColor: 'transparent' }} key={`id_${item}`} />
+                    <View style={styles.iconPlus}>
+
+                    </View>
                 ))
                 }
             </>
@@ -133,36 +133,37 @@ function Projects({ navigation }) {
 
     return (
         <>
-        <StatusBar backgroundColor={isDrawerOpen ? '#f6f6f6' : '#ff13a6' } barStyle="dark-content" 
-        animated={true}
+        <StatusBar 
+            backgroundColor={isDrawerOpen ? '#f6f6f6' : '#ff13a6' } 
+            barStyle="dark-content" 
+            animated={true}
         />
 
-            <Menu>
+            <View style={styles.menu}>
                 <MaterialIcons name="menu" size={40} color="#FFF"
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer()) } />
-                <Title> Romaneios </Title>
-                <MaterialIcons name="search" size={40} color="#FFF" />
+                    onPress={() => navigation.dispatch(DrawerActions.openDrawer()) } />
+                
+                <Text style={styles.textMenu}>Romaneios</Text>
+            </View>
 
-            </Menu>
+            <View style={styles.container}>
 
-            <Container>
+                {projectsPerPage.map(item => 
+                    <TouchableOpacity key={item} style={styles.projectBox}>
+                        <View style={styles.projectBoxTitle}>
+                            <Text style={styles.projectTitle}> Romaneio {item} </Text>
+                        </View>
+                  </TouchableOpacity>
+                )}
 
-                {projectsPerPage.map(item => (
-                    <ProjectBox key={`id_${item}`}>
-                        <ProjectBoxTitle>
-                            <ProjectTitle>Romaneio {item}</ProjectTitle>
-                        </ProjectBoxTitle>
-                    </ProjectBox>
-                ))}
+                {/* {AdjustLayout()} */}
 
-                {AdjustLayout()}
-
-                <IconAddBox onPress={() => navigation.navigate('NewProject')} >
+                <TouchableOpacity style={styles.iconPlus} onPress={() => navigation.navigate('NewProject')} >
                     <MaterialIcons name="add-circle" color="#FFDE1D" size={100} />
-                </IconAddBox>
+                </TouchableOpacity>
 
-                {pagination ? 
-                        <Pagination>
+                {pagination &&
+                    <View style={styles.paginationContainer}>
                             <MaterialIcons 
                                 name="first-page" 
                                 size={28} 
@@ -171,12 +172,13 @@ function Projects({ navigation }) {
                             />
                         
                             {pagesToShow.map(item => (
-                                    <ListPages 
+                                    <Text 
                                         key={`id_${item}`}
+                                        style={styles.paginationText}
                                         onPress={() => controls.goTo(item) }
                                     > 
                                         {item}
-                                    </ListPages>
+                                    </Text>
                                 )
                             )}
 
@@ -186,12 +188,97 @@ function Projects({ navigation }) {
                                 color="#408fb7"
                                 onPress={() => controls.last()} 
                             />
-                        </Pagination>
-                : null}
+                        </View>
+                    }
                
-            </Container>
+            </View>
         </>
     );
 }
 
 export default Projects;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f6f6f6',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignContent: 'space-around',
+    },
+
+    menu: {
+        backgroundColor: '#FF13A7',
+        height: 80,
+        paddingHorizontal: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: paddingTop,
+    },
+
+    textMenu: {
+        color: '#FFF',
+        fontFamily: 'roboto-regular',
+        fontSize: 35,
+        textAlign: 'left',
+        flex: 1,
+        marginHorizontal: 10,
+    },
+
+    projectBox: {
+        width: 180,
+        height: 180,
+        backgroundColor: '#5271FF',
+        borderRadius: 15,
+        marginVertical: 0,
+        marginHorizontal: 10,
+        justifyContent: "flex-end",
+      },
+    
+      projectBoxTitle: {
+        backgroundColor: '#C2EAFF',
+        borderRadius: 15,
+        
+        height: 44,
+        position: 'relative',
+        top: 0,
+      },
+    
+      projectTitle: {
+        color: '#000',
+        fontSize: 26,
+        lineHeight: 44,
+        textAlign: 'center',
+        fontFamily: 'roboto-regular',
+      },
+
+    iconPlus: {
+        width: 180,
+        height: 180,
+        backgroundColor: '#f6f6f6',
+
+        borderRadius: 15,
+        marginVertical: 0,
+        marginHorizontal: 10,
+
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    paginationContainer: {
+        width: Dimensions.get("window").width,
+        maxHeight: 30,
+        backgroundColor: '#f6f6f6',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    paginationText: {
+        color: '#408fb7',
+        fontSize: 25,
+        marginVertical: 0,
+        marginHorizontal: 5,
+    },
+})

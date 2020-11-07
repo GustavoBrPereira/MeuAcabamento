@@ -12,7 +12,11 @@ function MyDrawer() {
             initialRouteName="Romaneios" 
             drawerContent={(props) => <CustomDrawer {...props} />}
         >
-            <Drawer.Screen name="Romaneios" component={Projects} />
+            <Drawer.Screen 
+                name="Romaneios" 
+                component={Projects}
+                
+            />
         </Drawer.Navigator> 
     );
 }

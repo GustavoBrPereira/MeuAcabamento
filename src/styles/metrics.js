@@ -1,11 +1,7 @@
-
 import { Platform } from 'react-native';
 
+const paddingTop = Platform.OS === 'ios' ? 20 : 0;
+
 export const metrics = {
-  padding: 15,
-  ...Platform.select({
-    ios: { headerHeight: 64, headerPadding: 20 },
-    android: { headerHeight: 44, headerPadding: 0 },
-  }),
-  tabBarHeight: 50,
+  paddingTop: paddingTop,
 };
