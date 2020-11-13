@@ -1,65 +1,223 @@
-import React from 'react';
-import { KeyboardAvoidingView, Image, Keyboard, TouchableWithoutFeedback, 
-    StatusBar, TouchableOpacity, StyleSheet, TextInput, Dimensions, Text, View } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'
+import React, {useState} from 'react';
+import { Image, Keyboard, ScrollView, StatusBar, TouchableOpacity, 
+    StyleSheet, TextInput, Dimensions, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import registerImg from '../../assets/registerImg.png';
-import { paddingTop } from '../../styles/metrics';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import metrics from '../../styles/metrics';
+import Menu from '../../components/Menu';
 
 
 function UserAccount() {
+    const [tituloRomaneio, setTituloRomaneio] = useState('');
+    const [nomeCliente, setNomeCliente] = useState('');
+    const [dadosCliente, setDadosCliente] = useState('');
+    const [enderecoCliente, setEnderecoCliente] = useState('');
+    const [CNPJCliente, setCNPJCliente] = useState('');
+    const [emailCliente, setEmailCliente] = useState('');
+    const [fornecedorEmpresa, setFornecedorEmpresa] = useState('');
+    const [fornecedorProprietario, setFornecedorProprietario] = useState('');
+    const [enderecoFornecedor, setEnderecoFornecedor] = useState('');
+    const [CNPJFornecedor, setCNPJFornecedor] = useState('');
+    const [emailFornecedor, setEmailFornecedor] = useState('');
+    const [banco, setBanco] = useState('');
+    const [agencia, setAgencia] = useState('');
+    const [operacao, setOperacao] = useState('');
+    const [contaPoupanca, setContaPoupanca] = useState('');
+    const [telefone, setTelefone] = useState([]);
+
     const navigation = useNavigation();
 
     return(
         <>
         <StatusBar backgroundColor="#ff13a6" barStyle="light-content" />
-        <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss} accessible={false}>
-            <KeyboardAvoidingView behavior="position" >
-                
-                <View style={styles.menu}>
-                    <BorderlessButton onPress={navigation.goBack}>
-                        <MaterialIcons name="arrow-back" size={40} color="#FFF"/>
-                    </BorderlessButton>
 
-                    <Text style={styles.textMenu}>Conta</Text>
-                </View>
+            <Menu title="Conta" icon="arrow-back" /> 
 
-                <TouchableOpacity style={styles.useImg}>
+            <ScrollView style={styles.container} onPress={Keyboard.dismiss} >
+
+                <TouchableOpacity style={styles.containerUserImg}>
                     <Image 
-                        source={registerImg} 
-                        style={{width: 260, height: 260, alignSelf: 'center', borderRadius: 260/2}} 
+                        source={registerImg}
+                        style={styles.userImg} 
                     />
                 </TouchableOpacity>
 
+                <Text style={styles.label}>Título do romaneio</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Nome" placeholderTextColor='#b9bcc1'  
+                    placeholder="Título do romaneio" placeholderTextColor='#b9bcc1'  
+                    value={tituloRomaneio}
+                    onValueChange={setTituloRomaneio}
                     autoComplete='off'
                     autoCapitalize='words'
                     autoCorrect={false}
-                    selectTextOnFocus={true}
-                    value="Gustavo"
                 />
+
+                <Text style={styles.label}>Nome do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Sobrenome" placeholderTextColor='#b9bcc1'  
+                    placeholder="Nome do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={nomeCliente}
+                    onValueChange={setNomeCliente}
                     autoComplete='off'
                     autoCapitalize='words'
                     autoCorrect={false}
-                    selectTextOnFocus={true}
-                    value="Brito"
-                    
                 />
+
+                <Text style={styles.label}>Dados do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Telefone" placeholderTextColor='#b9bcc1'  
+                    placeholder="Dados do cliente" placeholderTextColor='#b9bcc1' 
+                    alue={dadosCliente}
+                    onValueChange={setDadosCliente} 
                     keyboardType='numeric'
                     autoComplete='off'
                     autoCorrect={false}
-                    selectTextOnFocus={true}
-                    value="(11) 9 1234-5678"
+                />
+
+                <Text style={styles.label}>Endereço do cliente</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Endereço do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={enderecoCliente}
+                    onValueChange={setEnderecoCliente}
+                    keyboardType='email-address'
+                    autoComplete='off'
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>CNPJ do cliente</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="CNPJ do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={CNPJCliente}
+                    onValueChange={setCNPJCliente}
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>E-mail do cliente</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="E-mail do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={emailCliente}
+                    onValueChange={setEmailCliente}
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Fornecedor (empresa)</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Fornecedor (empresa)" placeholderTextColor='#b9bcc1'  
+                    alue={fornecedorEmpresa}
+                    onValueChange={setFornecedorEmpresa}
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Fornecedor (proprietário)</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Fornecedor (proprietário)" placeholderTextColor='#b9bcc1' 
+                    alue={fornecedorProprietario}
+                    onValueChange={setFornecedorProprietario} 
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Endereço do fornecedor</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Endereço do fornecedor" placeholderTextColor='#b9bcc1'  
+                    alue={enderecoFornecedor}
+                    onValueChange={setEnderecoFornecedor}
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>CNPJ do fornecedor</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="CNPJ do fornecedor" placeholderTextColor='#b9bcc1' 
+                    alue={CNPJFornecedor}
+                    onValueChange={setCNPJFornecedor} 
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>E-mail do fornecedor</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="E-mail do fornecedor" placeholderTextColor='#b9bcc1'
+                    alue={emailFornecedor}
+                    onValueChange={setEmailFornecedor}  
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Banco</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Banco" placeholderTextColor='#b9bcc1'
+                    alue={banco}
+                    onValueChange={setBanco}  
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Agência</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Agência" placeholderTextColor='#b9bcc1' 
+                    alue={agencia}
+                    onValueChange={setAgencia} 
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Operação</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Operação" placeholderTextColor='#b9bcc1' 
+                    alue={operacao}
+                    onValueChange={setOperacao} 
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Conta poupança</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Conta poupança" placeholderTextColor='#b9bcc1' 
+                    alue={contaPoupanca}
+                    onValueChange={setContaPoupanca} 
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Telefone para contato</Text>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Telefone para contato" placeholderTextColor='#b9bcc1' 
+                    alue={telefone}
+                    onValueChange={setTelefone} 
+                    secureTextEntry={true}
+                    autoComplete='off'
+                    autoCorrect={false}
                 />
 
                 <TouchableOpacity style={styles.button}>
@@ -70,8 +228,7 @@ function UserAccount() {
                     <Text style={styles.buttonText}> Excluir Conta </Text>
                 </TouchableOpacity>
 
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+            </ScrollView>
         </>
     );
 }
@@ -79,71 +236,87 @@ function UserAccount() {
 export default UserAccount;
 
 const styles = StyleSheet.create({
-    useImg: {
+    container: {
+        flex: 1,
+    },
+
+    containerUserImg: {
         width: 260, 
         height: 260, 
-        alignSelf: 'center', 
+
         borderRadius: 260/2,
-        backgroundColor: 'red',
-        marginTop: 20
+        
+        alignSelf: 'center', 
+        
+        marginTop: 20,
     },
 
-    menu: {
-        backgroundColor: '#FF13A7',
-        height: 80,
-        paddingHorizontal: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingTop: paddingTop,
+    userImg: {
+        width: 260, 
+        height: 260, 
+        
+        alignSelf: 'center', 
+        
+        borderRadius: 260/2
     },
 
-    textMenu: {
-        color: '#FFF',
+    label: {
         fontFamily: 'roboto-regular',
-        fontSize: 35,
-        textAlign: 'left',
-        flex: 1,
+        fontSize: metrics.fontSizeMedium,
+        color: '#000',
+        
+        marginTop: 20,
+        marginBottom: 5,
         marginHorizontal: 10,
     },
 
     input: {
-        fontFamily: 'Roboto',
-        fontSize: 25,
+        width: ((Dimensions.get('window').width) / 100) *90,
         height: 35,
-        width: ((Dimensions.get('window').width) / 100) * 75,
-        textAlign: 'left',
         color: '#000',
-        marginVertical: 10,
-        marginHorizontal: 20,
+
+        fontFamily: 'Roboto',
+        fontSize: metrics.fontSizeMedium,
+        textAlign: 'left',
+
+        marginHorizontal: 10,
+
         borderBottomColor: '#C0CCDA',
         borderBottomWidth: 2,
     },
 
     button: {
-        backgroundColor: "#5271FF" ,
-        borderColor: 'transparent',
         minWidth: 260,
         height: 45,
+        
+        backgroundColor: metrics.colorBlue ,
+        
+        borderColor: 'transparent',
         borderRadius: 10,
+        
         margin: 10,
+        
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: "center",
     },
 
     buttonText: {
+        fontSize: metrics.fontSizeBig,
         color: '#FFF',
-        fontSize: 30,
     },
 
     buttonDelete: {
-        backgroundColor: "#ff5454" ,
-        borderColor: 'transparent',
-        borderRadius: 10,
         width: 260,
         height: 45,
+        
+        backgroundColor: "#ff5454" ,
+        
+        borderColor: 'transparent',
+        borderRadius: 10,
+        
         margin: 10,
+        
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',

@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import Projects from './pages/Projects';
 import NewProject from './pages/NewProject';
 import Register from './pages/Register';
-import Invoice from './pages/Invoice';
+import ProjectDetails from './pages/ProjectDetails';
 import Drawer from './pages/Drawer';
 import UserAccount from './pages/UserAccount';
 
@@ -20,11 +20,12 @@ export default function Routes() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           
+          <Stack.Screen name="Drawer" component={Drawer} />
           <Stack.Screen name="UserAccount" component={UserAccount} />
           
           <Stack.Screen name="Projects" component={Projects} />
           <Stack.Screen name="NewProject" component={NewProject} />
-          <Stack.Screen name="Drawer" component={Drawer} />
+          <Stack.Screen name="ProjectDetails" component={ProjectDetails} />
         </Stack.Navigator>
 
         </NavigationContainer>

@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useIsDrawerOpen } from '@react-navigation/drawer';
 
-import { paddingTop } from '../../styles/metrics';
+import metrics from '../../styles/metrics';
 
 function Projects() {
     const [pagination, setPagination] = useState(false);
@@ -19,7 +19,7 @@ function Projects() {
         16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
         26, 27, 28, 29, 30, 
         31, 32, 33, 34, 35,
-        36, 37, 38, 39, 40
+        36, 37, 
 
     ];
 
@@ -46,12 +46,13 @@ function Projects() {
             const firstElementToShowPosition = state.page - 1
             const start = firstElementToShowPosition * state.perPage
             const end = start + state.perPage
+            //projectsPerPage corta o array de numero de projetos
             const projectsPerPage = numberOfProjects.slice(start, end);
 
             return projectsPerPage;
         },
         calculateMaxVisibleButtons() {
-            const { maxVisibleButtons } = state
+            const { maxVisibleButtons } = state;
             let maxLeft = (state.page - Math.floor(maxVisibleButtons / 2));
             let maxRight = (state.page + Math.floor(maxVisibleButtons / 2));
 
@@ -111,9 +112,9 @@ function Projects() {
 
 
     function AdjustLayout() {
-        const emptyBoxes = 5 - projectsPerPage.length
+        const emptyBoxes = 5 - projectsPerPage.length;
 
-        const additionalBoxes = []
+        const additionalBoxes = [];
         for (i=0; i<emptyBoxes; i++) {
             additionalBoxes.push(i);
         }
@@ -121,7 +122,7 @@ function Projects() {
         return(
             <>
                 {additionalBoxes.map(item => (
-                    <View style={styles.iconPlus}>
+                    <View key={item} style={styles.iconPlus}>
 
                     </View>
                 ))
@@ -129,6 +130,7 @@ function Projects() {
             </>
         );
     }
+
     
 
     return (
@@ -149,14 +151,18 @@ function Projects() {
             <View style={styles.container}>
 
                 {projectsPerPage.map(item => 
-                    <TouchableOpacity key={item} style={styles.projectBox}>
+                    <TouchableOpacity 
+                        key={item} 
+                        style={styles.projectBox}
+                        onPress={() => navigation.navigate("ProjectDetails")}
+                    >
                         <View style={styles.projectBoxTitle}>
                             <Text style={styles.projectTitle}> Romaneio {item} </Text>
                         </View>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
                 )}
 
-                {/* {AdjustLayout()} */}
+                {AdjustLayout()}
 
                 <TouchableOpacity style={styles.iconPlus} onPress={() => navigation.navigate('NewProject')} >
                     <MaterialIcons name="add-circle" color="#FFDE1D" size={100} />
@@ -201,56 +207,72 @@ export default Projects;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f6f6f6',
         flexDirection: 'row',
         flexWrap: 'wrap',
+        
+        backgroundColor: '#f6f6f6',
+        
         alignContent: 'space-around',
     },
 
     menu: {
-        backgroundColor: '#FF13A7',
         height: 80,
-        paddingHorizontal: 15,
+        
         flexDirection: 'row',
+        
+        backgroundColor: metrics.colorPink,
+        
+        paddingHorizontal: 15,
+        paddingTop: metrics.paddingTopMenu,
+        
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: paddingTop,
     },
 
     textMenu: {
+        flex: 1,
+        
         color: '#FFF',
         fontFamily: 'roboto-regular',
-        fontSize: 35,
+        fontSize: metrics.fontSizeTitle,
+
         textAlign: 'left',
-        flex: 1,
+        
         marginHorizontal: 10,
     },
 
     projectBox: {
         width: 180,
         height: 180,
-        backgroundColor: '#5271FF',
+
+        backgroundColor: metrics.colorBlue,
+        
         borderRadius: 15,
+        
         marginVertical: 0,
         marginHorizontal: 10,
+        
         justifyContent: "flex-end",
       },
     
       projectBoxTitle: {
+        height: 44,
+        
         backgroundColor: '#C2EAFF',
+        
         borderRadius: 15,
         
-        height: 44,
         position: 'relative',
         top: 0,
       },
     
       projectTitle: {
         color: '#000',
-        fontSize: 26,
+
+        fontFamily: 'roboto-regular',
+        fontSize: metrics.fontSizeBig,
         lineHeight: 44,
         textAlign: 'center',
-        fontFamily: 'roboto-regular',
       },
 
     iconPlus: {
@@ -269,7 +291,9 @@ const styles = StyleSheet.create({
     paginationContainer: {
         width: Dimensions.get("window").width,
         maxHeight: 30,
+
         backgroundColor: '#f6f6f6',
+        
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -277,7 +301,8 @@ const styles = StyleSheet.create({
 
     paginationText: {
         color: '#408fb7',
-        fontSize: 25,
+        fontSize: metrics.fontSizeBig,
+        
         marginVertical: 0,
         marginHorizontal: 5,
     },

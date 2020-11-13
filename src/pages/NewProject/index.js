@@ -1,36 +1,44 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, ScrollView,
-    StatusBar, StyleSheet, TextInput, TouchableOpacity, Text, View, Dimensions } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { ScrollView, StatusBar, StyleSheet, TextInput, 
+    TouchableOpacity, Text, View, Dimensions } from 'react-native';
 import { useNavigation } from  '@react-navigation/native';
 
-import { paddingTop } from '../../styles/metrics';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import Menu from '../../components/Menu';
+import metrics from '../../styles/metrics';
 
 function NewProject() {
     const [date, setDate] = useState('');
 
     const navigation = useNavigation();
 
-    // function handleSelectDate(valor) {
-    //     setDate(valor);
-    //     console.log(date);
-    // };
-
     const numerosDePecas = [36, 38, 40, 42, 44, 46];
+
+    function handleFormatDate() {
+        function zeroFill(n) {
+            return n < 9 ? `0${n}` : `${n}`;
+        }
+
+        const arrayDate = date.split('/');
+        const data = new Date(`${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}T00:00:00-03:00`);
+        
+        const d = zeroFill(data.getDate());
+        const mo = zeroFill(data.getMonth() + 1);
+        const y = zeroFill(data.getFullYear());
+        
+        const dataFormatted = `${d}/${mo}/${y}`;
+
+        console.log(dataFormatted);
+
+        return dataFormatted;
+
+    }
 
     return(
         <>
         <StatusBar backgroundColor="#ff13a6" barStyle="dark-content" />
             {/* <KeyboardAvoidingView behavior="position"> */}
                 
-            <View style={styles.menu}>
-                <BorderlessButton onPress={navigation.goBack}>
-                    <MaterialIcons name="arrow-back" size={40} color="#FFF"/>
-                </BorderlessButton>
-
-                <Text style={styles.textMenu}>Novo Romaneio</Text>
-            </View>
+            <Menu title="Novo Romaneio" icon="arrow-back" />
 
             <ScrollView style={styles.container} >
 
@@ -42,6 +50,7 @@ function NewProject() {
                 autoCorrect={false}
                 keyboardType='numeric'
             />
+
             <Text style={styles.label}>Nome do Produto</Text>
             <TextInput
                 style={styles.input} 
@@ -50,17 +59,23 @@ function NewProject() {
                 autoCapitalize='words'
                 autoCorrect={false}
             />
+
             <Text style={styles.label}>Número do Corte</Text>
             <TextInput
                 style={styles.input} 
                 placeholder="Número do Corte" placeholderTextColor='#b9bcc1'  
                 keyboardType='numeric'
             />
+
             <Text style={styles.label}>Digite a data de entrega</Text>
             <TextInput
                 style={styles.input} 
                 placeholder="Digite a data de entrega" placeholderTextColor='#b9bcc1'  
+                value={date}
+                onChangeText={setDate}
+                keyboardType="default"
             />
+
             <Text style={styles.label}>Observações</Text>
             <TextInput
                 style={styles.input} 
@@ -147,7 +162,7 @@ function NewProject() {
             />
 
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity onPress={handleFormatDate} style={styles.button}>
                 <Text style={styles.buttonText}> Criar </Text>
             </TouchableOpacity>
                 
@@ -163,30 +178,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    
-    menu: {
-        backgroundColor: '#FF13A7',
-        height: 80,
-        paddingHorizontal: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingTop: paddingTop,
-    },
-
-    textMenu: {
-        color: '#FFF',
-        fontFamily: 'roboto-regular',
-        fontSize: 35,
-        textAlign: 'left',
-        flex: 1,
-        marginHorizontal: 10,
-    },
 
     label: {
         color: '#000',
         fontFamily: 'roboto-regular',
-        fontSize: 20,
+        fontSize: metrics.fontSizeMedium,
+        
         marginTop: 20,
         marginBottom: 5,
         marginHorizontal: 10,
@@ -195,10 +192,11 @@ const styles = StyleSheet.create({
     input: {
         width: ((Dimensions.get('window').width) / 100) *90,
         height: 35,
-        color: '#000',
 
+        color: '#000',
         fontFamily: 'Roboto',
-        fontSize: 20,
+        fontSize: metrics.fontSizeMedium,
+
         textAlign: 'left',
 
         marginHorizontal: 10,
@@ -208,12 +206,16 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        backgroundColor: "#5271FF" ,
-        borderColor: 'transparent',
         minWidth: 260,
         height: 45,
+
+        backgroundColor: metrics.colorBlue ,
+        
+        borderColor: 'transparent',
         borderRadius: 10,
+        
         margin: 10,
+        
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: "center",
@@ -221,6 +223,6 @@ const styles = StyleSheet.create({
 
     buttonText: {
         color: '#FFF',
-        fontSize: 30,
+        fontSize: metrics.fontSizeBig,
     },
 })

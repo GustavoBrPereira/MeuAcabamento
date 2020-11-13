@@ -1,9 +1,10 @@
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import LogoImg from '../../assets/logoImg.png';
 import { Text, StatusBar, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import LogoImg from '../../assets/logoImg.png';
+import metrics from '../../styles/metrics';
 
 
 function Login() {
@@ -61,21 +62,28 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
+
         justifyContent: "center",
         alignItems: "center",
+
         padding: 20
     },
 
     input: {
-        backgroundColor: '#ffde1d',
-        color: '#FFF',
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderColor: 'transparent',
-        borderRadius: 10,
         width: 260,
         height: 40,
-        fontSize: 25,
+
+        fontSize: metrics.fontSizeBig,
+        color: '#FFF',
+
+        backgroundColor: metrics.colorYellow,
+        
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+
+        borderColor: 'transparent',
+        borderRadius: 10,
+        
         marginVertical: 5,
         marginHorizontal: 0,
     },
@@ -83,21 +91,27 @@ const styles = StyleSheet.create({
     logo: {
         maxWidth: 280,
         maxHeight: 300,
+
         marginTop: 60,
     },
 
     textRegister: {
-        fontSize: 15, 
         color: '#7dadce',
+        fontSize: metrics.fontSizeSmall, 
     },
 
     button: {
-        backgroundColor: "#5271FF" ,
-        borderColor: 'transparent',
         minWidth: 260,
         height: 45,
+
+        backgroundColor: metrics.colorBlue ,
+        
+        borderColor: 'transparent',
+        
         borderRadius: 10,
+        
         margin: 10,
+        
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: "center",
@@ -105,6 +119,6 @@ const styles = StyleSheet.create({
 
     buttonText: {
         color: '#FFF',
-        fontSize: 30,
+        fontSize: metrics.fontSizeBig,
     },
 })

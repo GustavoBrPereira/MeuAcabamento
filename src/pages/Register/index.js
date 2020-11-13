@@ -1,40 +1,54 @@
-import React from 'react';
-import { KeyboardAvoidingView, Image, Keyboard, TouchableWithoutFeedback, ScrollView,
-    StatusBar, StyleSheet, TextInput, TouchableOpacity, Text, View, Dimensions } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'
+import React, { useState } from 'react';
+import { Image, Keyboard, ScrollView, StatusBar, StyleSheet, 
+    TextInput, TouchableOpacity, Text, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import registerImg from '../../assets/registerImg.png';
-import { paddingTop } from '../../styles/metrics';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import metrics  from '../../styles/metrics';
+import Menu from '../../components/Menu';
 
 function Register() {
+    const [tituloRomaneio, setTituloRomaneio] = useState('');
+    const [nomeCliente, setNomeCliente] = useState('');
+    const [dadosCliente, setDadosCliente] = useState('');
+    const [enderecoCliente, setEnderecoCliente] = useState('');
+    const [CNPJCliente, setCNPJCliente] = useState('');
+    const [emailCliente, setEmailCliente] = useState('');
+    const [fornecedorEmpresa, setFornecedorEmpresa] = useState('');
+    const [fornecedorProprietario, setFornecedorProprietario] = useState('');
+    const [enderecoFornecedor, setEnderecoFornecedor] = useState('');
+    const [CNPJFornecedor, setCNPJFornecedor] = useState('');
+    const [emailFornecedor, setEmailFornecedor] = useState('');
+    const [banco, setBanco] = useState('');
+    const [agencia, setAgencia] = useState('');
+    const [operacao, setOperacao] = useState('');
+    const [contaPoupanca, setContaPoupanca] = useState('');
+    const [telefone, setTelefone] = useState([]);
+
     const navigation = useNavigation();
 
     return(
         <>
         <StatusBar backgroundColor="#ff13a6" barStyle="light-content" />
-        <ScrollView style={styles.container} >
 
-            <KeyboardAvoidingView behavior="position" >
-                
-                <View style={styles.menu}>
-                    <BorderlessButton onPress={navigation.goBack}>
-                        <MaterialIcons name="arrow-back" size={40} color="#FFF"/>
-                    </BorderlessButton>
-                    
-                    
-                    <Text style={styles.textMenu}>Cadastro</Text>
-                </View>
+        <Menu title="Cadastro" icon="arrow-back" />
+            
+            <ScrollView style={styles.container} onPress={Keyboard.dismiss}>
 
-                <Image source={{
-                    uri: 'https://gtrainer.com.br/images/foto_default.png'
-                }} style={{width: 260, height: 260, alignSelf: 'center', marginTop: 10}} />
+                <TouchableOpacity style={styles.containerUserImg}>
+                    <Image 
+                        source={{
+                            uri: 'https://gtrainer.com.br/images/foto_default.png',
+                        }}
+                        style={styles.userImg} 
+                    />
+                </TouchableOpacity>
 
                 <Text style={styles.label}>Título do romaneio</Text>
                 <TextInput
                     style={styles.input} 
                     placeholder="Título do romaneio" placeholderTextColor='#b9bcc1'  
+                    value={tituloRomaneio}
+                    onValueChange={setTituloRomaneio}
                     autoComplete='off'
                     autoCapitalize='words'
                     autoCorrect={false}
@@ -44,6 +58,8 @@ function Register() {
                 <TextInput
                     style={styles.input} 
                     placeholder="Nome do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={nomeCliente}
+                    onValueChange={setNomeCliente}
                     autoComplete='off'
                     autoCapitalize='words'
                     autoCorrect={false}
@@ -52,7 +68,9 @@ function Register() {
                 <Text style={styles.label}>Dados do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Dados do cliente" placeholderTextColor='#b9bcc1'  
+                    placeholder="Dados do cliente" placeholderTextColor='#b9bcc1' 
+                    alue={dadosCliente}
+                    onValueChange={setDadosCliente} 
                     keyboardType='numeric'
                     autoComplete='off'
                     autoCorrect={false}
@@ -62,6 +80,8 @@ function Register() {
                 <TextInput
                     style={styles.input} 
                     placeholder="Endereço do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={enderecoCliente}
+                    onValueChange={setEnderecoCliente}
                     keyboardType='email-address'
                     autoComplete='off'
                     autoCapitalize='none'
@@ -72,6 +92,8 @@ function Register() {
                 <TextInput
                     style={styles.input} 
                     placeholder="CNPJ do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={CNPJCliente}
+                    onValueChange={setCNPJCliente}
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -81,6 +103,8 @@ function Register() {
                 <TextInput
                     style={styles.input} 
                     placeholder="E-mail do cliente" placeholderTextColor='#b9bcc1'  
+                    alue={emailCliente}
+                    onValueChange={setEmailCliente}
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -90,6 +114,8 @@ function Register() {
                 <TextInput
                     style={styles.input} 
                     placeholder="Fornecedor (empresa)" placeholderTextColor='#b9bcc1'  
+                    alue={fornecedorEmpresa}
+                    onValueChange={setFornecedorEmpresa}
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -98,7 +124,9 @@ function Register() {
                 <Text style={styles.label}>Fornecedor (proprietário)</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Fornecedor (proprietário)" placeholderTextColor='#b9bcc1'  
+                    placeholder="Fornecedor (proprietário)" placeholderTextColor='#b9bcc1' 
+                    alue={fornecedorProprietario}
+                    onValueChange={setFornecedorProprietario} 
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -108,6 +136,8 @@ function Register() {
                 <TextInput
                     style={styles.input} 
                     placeholder="Endereço do fornecedor" placeholderTextColor='#b9bcc1'  
+                    alue={enderecoFornecedor}
+                    onValueChange={setEnderecoFornecedor}
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -116,7 +146,9 @@ function Register() {
                 <Text style={styles.label}>CNPJ do fornecedor</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="CNPJ do fornecedor" placeholderTextColor='#b9bcc1'  
+                    placeholder="CNPJ do fornecedor" placeholderTextColor='#b9bcc1' 
+                    alue={CNPJFornecedor}
+                    onValueChange={setCNPJFornecedor} 
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -125,7 +157,9 @@ function Register() {
                 <Text style={styles.label}>E-mail do fornecedor</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="E-mail do fornecedor" placeholderTextColor='#b9bcc1'  
+                    placeholder="E-mail do fornecedor" placeholderTextColor='#b9bcc1'
+                    alue={emailFornecedor}
+                    onValueChange={setEmailFornecedor}  
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -134,7 +168,9 @@ function Register() {
                 <Text style={styles.label}>Banco</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Banco" placeholderTextColor='#b9bcc1'  
+                    placeholder="Banco" placeholderTextColor='#b9bcc1'
+                    alue={banco}
+                    onValueChange={setBanco}  
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -143,7 +179,9 @@ function Register() {
                 <Text style={styles.label}>Agência</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Agência" placeholderTextColor='#b9bcc1'  
+                    placeholder="Agência" placeholderTextColor='#b9bcc1' 
+                    alue={agencia}
+                    onValueChange={setAgencia} 
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -152,7 +190,9 @@ function Register() {
                 <Text style={styles.label}>Operação</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Operação" placeholderTextColor='#b9bcc1'  
+                    placeholder="Operação" placeholderTextColor='#b9bcc1' 
+                    alue={operacao}
+                    onValueChange={setOperacao} 
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -161,7 +201,9 @@ function Register() {
                 <Text style={styles.label}>Conta poupança</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Conta poupança" placeholderTextColor='#b9bcc1'  
+                    placeholder="Conta poupança" placeholderTextColor='#b9bcc1' 
+                    alue={contaPoupanca}
+                    onValueChange={setContaPoupanca} 
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -170,7 +212,9 @@ function Register() {
                 <Text style={styles.label}>Telefone para contato</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Telefone para contato" placeholderTextColor='#b9bcc1'  
+                    placeholder="Telefone para contato" placeholderTextColor='#b9bcc1' 
+                    alue={telefone}
+                    onValueChange={setTelefone} 
                     secureTextEntry={true}
                     autoComplete='off'
                     autoCorrect={false}
@@ -180,8 +224,7 @@ function Register() {
                     <Text style={styles.buttonText}> Cadastrar </Text>
                 </TouchableOpacity>
 
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </ScrollView>
         </>
     );
 }
@@ -189,29 +232,35 @@ function Register() {
 export default Register;
 
 const styles = StyleSheet.create({
-    menu: {
-        backgroundColor: '#FF13A7',
-        height: 80,
-        paddingHorizontal: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingTop: paddingTop,
+    container: {
+        flex: 1,
     },
 
-    textMenu: {
-        color: '#FFF',
-        fontFamily: 'roboto-regular',
-        fontSize: 35,
-        textAlign: 'left',
-        flex: 1,
-        marginHorizontal: 10,
+    containerUserImg: {
+        width: 260, 
+        height: 260, 
+
+        alignSelf: 'center', 
+        
+        borderRadius: 260/2,
+        
+        marginTop: 20,
+    },
+
+    userImg: {
+        width: 260, 
+        height: 260, 
+        
+        borderRadius: 260/2,
+        
+        alignSelf: 'center', 
     },
 
     label: {
-        color: '#000',
         fontFamily: 'roboto-regular',
-        fontSize: 20,
+        fontSize: metrics.fontSizeMedium,
+        color: '#000',
+        
         marginTop: 20,
         marginBottom: 5,
         marginHorizontal: 10,
@@ -223,7 +272,7 @@ const styles = StyleSheet.create({
         color: '#000',
 
         fontFamily: 'Roboto',
-        fontSize: 20,
+        fontSize: metrics.fontSizeMedium,
         textAlign: 'left',
 
         marginHorizontal: 10,
@@ -233,21 +282,27 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        backgroundColor: "#5271FF" ,
-        borderColor: 'transparent',
         minWidth: 260,
         height: 45,
+        
+        backgroundColor: metrics.colorBlue ,
+        
+        borderColor: 'transparent',
+        
         borderRadius: 10,
+        
         margin: 10,
+        
         justifyContent: 'center',
+        
         alignItems: 'center',
         alignSelf: "center",
     },
 
     buttonText: {
         fontFamily: 'roboto-regular',
+        fontSize: metrics.fontSizeBig,
         color: '#FFF',
-        fontSize: 30,
     },
 
 })
