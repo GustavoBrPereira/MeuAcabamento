@@ -1,30 +1,96 @@
 import React, { useState } from 'react';
 import { Image, Keyboard, ScrollView, StatusBar, StyleSheet, 
-    TextInput, TouchableOpacity, Text, Dimensions } from 'react-native';
+    TextInput, TouchableOpacity, Text, Dimensions, NavigatorIOS } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 import metrics  from '../../styles/metrics';
 import Menu from '../../components/Menu';
+import default_userPhoto from '../../assets/default_userPhoto.png';
+
+import api from '../../services/api';
 
 function Register() {
-    const [tituloRomaneio, setTituloRomaneio] = useState('');
-    const [nomeCliente, setNomeCliente] = useState('');
-    const [dadosCliente, setDadosCliente] = useState('');
-    const [enderecoCliente, setEnderecoCliente] = useState('');
-    const [CNPJCliente, setCNPJCliente] = useState('');
-    const [emailCliente, setEmailCliente] = useState('');
-    const [fornecedorEmpresa, setFornecedorEmpresa] = useState('');
-    const [fornecedorProprietario, setFornecedorProprietario] = useState('');
-    const [enderecoFornecedor, setEnderecoFornecedor] = useState('');
-    const [CNPJFornecedor, setCNPJFornecedor] = useState('');
-    const [emailFornecedor, setEmailFornecedor] = useState('');
-    const [banco, setBanco] = useState('');
-    const [agencia, setAgencia] = useState('');
-    const [operacao, setOperacao] = useState('');
-    const [contaPoupanca, setContaPoupanca] = useState('');
-    const [telefone, setTelefone] = useState([]);
+    const [emailAccount, setEmailAccount] = useState('');
+    const [passwordAccount, setPasswordAccount] = useState('');
+    const [projectName, setProjectName] = useState('');
+    const [customerName, setCustomerName] = useState('');
+    const [customerData, setCustomerData] = useState('');
+    const [customerAddress, setCustomerAddress] = useState('');
+    const [customerCNPJ, setCustomerCNPJ] = useState('');
+    const [customerEmail, setCustomerEmail] = useState('');
+    const [providerCompanyName, setProviderCompanyName] = useState('');
+    const [providerOwnerName, setProviderOwnerName] = useState('');
+    const [providerAddress, setProviderAddress] = useState('');
+    const [providerCNPJ, setProviderCNPJ] = useState('');
+    const [providerEmail, setProviderEmail] = useState('');
+    const [bank, setBank] = useState('');
+    const [bankAgency, setBankAgency] = useState('');
+    const [operation, setOperation] = useState('');
+    const [savingsAccount, setSavingsAccount] = useState('');
+    const [phoneContact, setPhoneContact] = useState([]);
+    const [image, setImage] = useState('');
 
     const navigation = useNavigation();
+
+
+    async function handleCreateUser() {
+        const data = new FormData();
+        
+        data.append('emailAccount', emailAccount);
+        data.append('passwordAccount', passwordAccount);
+        data.append('projectName', projectName);
+        data.append('customerName', customerName);
+        data.append('customerData', customerData);
+        data.append('customerAddress', customerAddress);
+        data.append('customerCNPJ', customerCNPJ);
+        data.append('customerEmail', customerEmail);
+        data.append('providerCompanyName', providerCompanyName);
+        data.append('providerOwnerName', providerOwnerName);
+        data.append('providerAddress', providerAddress);
+        data.append('providerCNPJ', providerCNPJ);
+        data.append('providerEmail', providerEmail);
+        data.append('bank', bank);
+        data.append('bankAgency', bankAgency);
+        data.append('operation', operation);
+        data.append('savingsAccount', savingsAccount);
+        data.append('phoneContact', phoneContact);
+        if (image) {
+            data.append('image', {
+                name: `image_${Date.now()}.jpg`,
+                type: 'image/jpg',
+                uri: image,
+            });
+        }
+
+        await api.post('users', data);
+
+        navigation.navigate('Login');
+
+    }
+
+    async function handleSelectImage() {
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+
+        if (status !== 'granted') {
+            alert('Precisamos de acesso às suas fotos...')
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        });
+
+        if (result.cancelled) {
+            return;
+        }
+
+        const { uri: imageURI } = result;
+
+        setImage(imageURI);
+    }
 
     return(
         <>
@@ -34,21 +100,43 @@ function Register() {
             
             <ScrollView style={styles.container} onPress={Keyboard.dismiss}>
 
-                <TouchableOpacity style={styles.containerUserImg}>
+                <TouchableOpacity style={styles.containerUserImg} onPress={handleSelectImage}>
+                    {image ? 
                     <Image 
                         source={{
-                            uri: 'https://gtrainer.com.br/images/foto_default.png',
+                            uri: image,
                         }}
                         style={styles.userImg} 
-                    />
+                    /> : 
+                    <Image 
+                        source={default_userPhoto}
+                        style={styles.userImg} 
+                    />}
                 </TouchableOpacity>
+
+                <Text style={styles.label}>Email da Conta</Text>
+                <TextInput
+                    style={styles.input} 
+                    value={emailAccount}
+                    onChangeText={setEmailAccount}
+                    autoComplete='off'
+                    autoCapitalize='words'
+                    autoCorrect={false}
+                />
+
+                <Text style={styles.label}>Senha</Text>
+                <TextInput
+                    style={styles.input} 
+                    value={passwordAccount}
+                    onChangeText={setPasswordAccount}
+                    secureTextEntry={true}
+                />
 
                 <Text style={styles.label}>Título do romaneio</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Título do romaneio" placeholderTextColor='#b9bcc1'  
-                    value={tituloRomaneio}
-                    onValueChange={setTituloRomaneio}
+                    value={projectName}
+                    onChangeText={setProjectName}
                     autoComplete='off'
                     autoCapitalize='words'
                     autoCorrect={false}
@@ -57,9 +145,8 @@ function Register() {
                 <Text style={styles.label}>Nome do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Nome do cliente" placeholderTextColor='#b9bcc1'  
-                    alue={nomeCliente}
-                    onValueChange={setNomeCliente}
+                    alue={customerName}
+                    onChangeText={setCustomerName}
                     autoComplete='off'
                     autoCapitalize='words'
                     autoCorrect={false}
@@ -68,10 +155,8 @@ function Register() {
                 <Text style={styles.label}>Dados do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Dados do cliente" placeholderTextColor='#b9bcc1' 
-                    alue={dadosCliente}
-                    onValueChange={setDadosCliente} 
-                    keyboardType='numeric'
+                    alue={customerData}
+                    onChangeText={setCustomerData} 
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -79,9 +164,8 @@ function Register() {
                 <Text style={styles.label}>Endereço do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Endereço do cliente" placeholderTextColor='#b9bcc1'  
-                    alue={enderecoCliente}
-                    onValueChange={setEnderecoCliente}
+                    alue={customerAddress}
+                    onChangeText={setCustomerAddress}
                     keyboardType='email-address'
                     autoComplete='off'
                     autoCapitalize='none'
@@ -91,10 +175,8 @@ function Register() {
                 <Text style={styles.label}>CNPJ do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="CNPJ do cliente" placeholderTextColor='#b9bcc1'  
-                    alue={CNPJCliente}
-                    onValueChange={setCNPJCliente}
-                    secureTextEntry={true}
+                    alue={customerCNPJ}
+                    onChangeText={setCustomerCNPJ}
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -102,10 +184,8 @@ function Register() {
                 <Text style={styles.label}>E-mail do cliente</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="E-mail do cliente" placeholderTextColor='#b9bcc1'  
-                    alue={emailCliente}
-                    onValueChange={setEmailCliente}
-                    secureTextEntry={true}
+                    alue={customerEmail}
+                    onChangeText={setCustomerEmail}
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -113,10 +193,8 @@ function Register() {
                 <Text style={styles.label}>Fornecedor (empresa)</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Fornecedor (empresa)" placeholderTextColor='#b9bcc1'  
-                    alue={fornecedorEmpresa}
-                    onValueChange={setFornecedorEmpresa}
-                    secureTextEntry={true}
+                    alue={providerCompanyName}
+                    onChangeText={setProviderCompanyName}
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -124,10 +202,8 @@ function Register() {
                 <Text style={styles.label}>Fornecedor (proprietário)</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Fornecedor (proprietário)" placeholderTextColor='#b9bcc1' 
-                    alue={fornecedorProprietario}
-                    onValueChange={setFornecedorProprietario} 
-                    secureTextEntry={true}
+                    alue={providerOwnerName}
+                    onChangeText={setProviderOwnerName} 
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -135,10 +211,8 @@ function Register() {
                 <Text style={styles.label}>Endereço do fornecedor</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Endereço do fornecedor" placeholderTextColor='#b9bcc1'  
-                    alue={enderecoFornecedor}
-                    onValueChange={setEnderecoFornecedor}
-                    secureTextEntry={true}
+                    alue={providerAddress}
+                    onChangeText={setProviderAddress}
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -146,10 +220,8 @@ function Register() {
                 <Text style={styles.label}>CNPJ do fornecedor</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="CNPJ do fornecedor" placeholderTextColor='#b9bcc1' 
-                    alue={CNPJFornecedor}
-                    onValueChange={setCNPJFornecedor} 
-                    secureTextEntry={true}
+                    alue={providerCNPJ}
+                    onChangeText={setProviderCNPJ} 
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -157,10 +229,8 @@ function Register() {
                 <Text style={styles.label}>E-mail do fornecedor</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="E-mail do fornecedor" placeholderTextColor='#b9bcc1'
-                    alue={emailFornecedor}
-                    onValueChange={setEmailFornecedor}  
-                    secureTextEntry={true}
+                    alue={providerEmail}
+                    onChangeText={setProviderEmail}  
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -168,10 +238,8 @@ function Register() {
                 <Text style={styles.label}>Banco</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Banco" placeholderTextColor='#b9bcc1'
-                    alue={banco}
-                    onValueChange={setBanco}  
-                    secureTextEntry={true}
+                    alue={bank}
+                    onChangeText={setBank}  
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -179,10 +247,8 @@ function Register() {
                 <Text style={styles.label}>Agência</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Agência" placeholderTextColor='#b9bcc1' 
-                    alue={agencia}
-                    onValueChange={setAgencia} 
-                    secureTextEntry={true}
+                    alue={bankAgency}
+                    onChangeText={setBankAgency} 
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -190,10 +256,8 @@ function Register() {
                 <Text style={styles.label}>Operação</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Operação" placeholderTextColor='#b9bcc1' 
-                    alue={operacao}
-                    onValueChange={setOperacao} 
-                    secureTextEntry={true}
+                    alue={operation}
+                    onChangeText={setOperation} 
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -201,10 +265,8 @@ function Register() {
                 <Text style={styles.label}>Conta poupança</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Conta poupança" placeholderTextColor='#b9bcc1' 
-                    alue={contaPoupanca}
-                    onValueChange={setContaPoupanca} 
-                    secureTextEntry={true}
+                    alue={savingsAccount}
+                    onChangeText={setSavingsAccount} 
                     autoComplete='off'
                     autoCorrect={false}
                 />
@@ -212,15 +274,13 @@ function Register() {
                 <Text style={styles.label}>Telefone para contato</Text>
                 <TextInput
                     style={styles.input} 
-                    placeholder="Telefone para contato" placeholderTextColor='#b9bcc1' 
-                    alue={telefone}
-                    onValueChange={setTelefone} 
-                    secureTextEntry={true}
+                    alue={phoneContact}
+                    onChangeText={setPhoneContact} 
                     autoComplete='off'
                     autoCorrect={false}
                 />
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={handleCreateUser}>
                     <Text style={styles.buttonText}> Cadastrar </Text>
                 </TouchableOpacity>
 

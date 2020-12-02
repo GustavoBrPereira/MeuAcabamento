@@ -13,6 +13,8 @@ const getFonts = () => Font.loadAsync({
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
+  // console.ignoredYellowBox = ['Warning: Failed'];
+
   if(fontsLoaded) {
     return (
       <Routes />

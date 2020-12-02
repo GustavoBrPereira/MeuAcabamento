@@ -23,7 +23,6 @@ export default function Routes() {
           <Stack.Screen name="Drawer" component={Drawer} />
           <Stack.Screen name="UserAccount" component={UserAccount} />
           
-          <Stack.Screen name="Projects" component={Projects} />
           <Stack.Screen name="NewProject" component={NewProject} />
           <Stack.Screen name="ProjectDetails" component={ProjectDetails} />
         </Stack.Navigator>

@@ -6,12 +6,12 @@ import { useNavigation } from  '@react-navigation/native';
 
 import metrics from '../../styles/metrics';
 
-export default function Menu({ title, icon }) {
+export default function Menu({ title, icon, newProject }) {
     const navigation = useNavigation();
 
     return(
         <View style={styles.menu}>
-            <BorderlessButton onPress={navigation.goBack}>
+            <BorderlessButton onPress={newProject ? () => navigation.navigate('Drawer') : navigation.goBack}>
                 <MaterialIcons name={icon} size={40} color="#FFF"/>
             </BorderlessButton>
 

@@ -1,137 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { StatusBar, View, StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StatusBar, View, StyleSheet, Text, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useIsDrawerOpen } from '@react-navigation/drawer';
 
 import metrics from '../../styles/metrics';
 
-function Projects() {
-    const [pagination, setPagination] = useState(false);
-    const [page, setPage] = useState(1);
+import api from '../../services/api';
 
+function Projects() {
+    const [projects, setProjects] = useState([]);
     const navigation = useNavigation();
+
+    useFocusEffect(() => {
+        api.get('projects').then(response => {
+            setProjects(response.data);
+        });
+    });    
 
     const isDrawerOpen = useIsDrawerOpen();
 
-    const numberOfProjects = [1, 2, 3, 4, 5,
-        6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-        16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-        26, 27, 28, 29, 30, 
-        31, 32, 33, 34, 35,
-        36, 37, 
-
-    ];
-
-    useEffect(() => {
-        if(numberOfProjects.length > 5) {
-        setPagination(true)
-        }
-        setPage(1)
-
-    }, [])
-
     
-    
-    let perPage = 5
-    const state = {
-        page,
-        perPage,
-        totalPage: Math.ceil( numberOfProjects.length / perPage ),
-        maxVisibleButtons: 5
+
+    function handleNavigateToProjectDetails(id) {
+        navigation.navigate('ProjectDetails', { id })
     }
-
-    const buttons ={
-        calculateProjectsVisible() {
-            const firstElementToShowPosition = state.page - 1
-            const start = firstElementToShowPosition * state.perPage
-            const end = start + state.perPage
-            //projectsPerPage corta o array de numero de projetos
-            const projectsPerPage = numberOfProjects.slice(start, end);
-
-            return projectsPerPage;
-        },
-        calculateMaxVisibleButtons() {
-            const { maxVisibleButtons } = state;
-            let maxLeft = (state.page - Math.floor(maxVisibleButtons / 2));
-            let maxRight = (state.page + Math.floor(maxVisibleButtons / 2));
-
-            if(maxLeft < 1){
-                maxLeft = 1
-                maxRight = maxVisibleButtons
-            }
-
-            if(maxRight > state.totalPage) {
-                maxLeft = state.totalPage - ( maxVisibleButtons - 1 )
-                maxRight = state.totalPage
-
-                if(maxLeft < 1) maxLeft = 1
-            }
-
-            return { maxLeft, maxRight };
-        },
-        update() {
-            const { maxLeft, maxRight } = buttons.calculateMaxVisibleButtons()
-            let pagesToShow = []
-            
-            for(let page = maxLeft; page <= maxRight; page++){
-                pagesToShow.push(page);
-            }
-
-            return pagesToShow
-        }
-    }
-
-
-    const pagesToShow = buttons.update()
-    const projectsPerPage = buttons.calculateProjectsVisible()
-
-    const controls = {
-        first() {
-            setPage(1)
-        },
-        last() {
-            setPage(state.totalPage)
-        },
-        goTo(page) {
-            if(page < 1) {
-               page = 1
-            }
-
-            state.page = page
-            setPage(page)
-            
-
-            if(page > state.totalPage) {
-                state.page = state.totalPage;
-            }
-            buttons.update()
-
-        }
-    }
-
-
-    function AdjustLayout() {
-        const emptyBoxes = 5 - projectsPerPage.length;
-
-        const additionalBoxes = [];
-        for (i=0; i<emptyBoxes; i++) {
-            additionalBoxes.push(i);
-        }
-
-        return(
-            <>
-                {additionalBoxes.map(item => (
-                    <View key={item} style={styles.iconPlus}>
-
-                    </View>
-                ))
-                }
-            </>
-        );
-    }
-
-    
 
     return (
         <>
@@ -148,56 +41,28 @@ function Projects() {
                 <Text style={styles.textMenu}>Romaneios</Text>
             </View>
 
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
 
-                {projectsPerPage.map(item => 
+                {projects.map(project => 
                     <TouchableOpacity 
-                        key={item} 
+                        key={project.id} 
                         style={styles.projectBox}
-                        onPress={() => navigation.navigate("ProjectDetails")}
+                        onPress={() => handleNavigateToProjectDetails(project.id)}
                     >
                         <View style={styles.projectBoxTitle}>
-                            <Text style={styles.projectTitle}> Romaneio {item} </Text>
+                            <Text style={styles.projectTitle}> Romaneio {project.id} </Text>
                         </View>
                     </TouchableOpacity>
                 )}
 
-                {AdjustLayout()}
-
-                <TouchableOpacity style={styles.iconPlus} onPress={() => navigation.navigate('NewProject')} >
+                <TouchableOpacity 
+                    style={styles.iconPlus} 
+                    onPress={() => navigation.navigate('NewProject')} 
+                >
                     <MaterialIcons name="add-circle" color="#FFDE1D" size={100} />
                 </TouchableOpacity>
-
-                {pagination &&
-                    <View style={styles.paginationContainer}>
-                            <MaterialIcons 
-                                name="first-page" 
-                                size={28} 
-                                color="#408fb7" 
-                                onPress={() => controls.first()}
-                            />
-                        
-                            {pagesToShow.map(item => (
-                                    <Text 
-                                        key={`id_${item}`}
-                                        style={styles.paginationText}
-                                        onPress={() => controls.goTo(item) }
-                                    > 
-                                        {item}
-                                    </Text>
-                                )
-                            )}
-
-                            <MaterialIcons 
-                                name="last-page" 
-                                size={28} 
-                                color="#408fb7"
-                                onPress={() => controls.last()} 
-                            />
-                        </View>
-                    }
                
-            </View>
+            </ScrollView>
         </>
     );
 }
@@ -206,13 +71,13 @@ export default Projects;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         
         backgroundColor: '#f6f6f6',
         
-        alignContent: 'space-around',
+        justifyContent: 'space-between',
+        alignContent: "space-around"
     },
 
     menu: {
@@ -249,7 +114,7 @@ const styles = StyleSheet.create({
         
         borderRadius: 15,
         
-        marginVertical: 0,
+        marginVertical: 10,
         marginHorizontal: 10,
         
         justifyContent: "flex-end",

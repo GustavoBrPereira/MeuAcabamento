@@ -3,7 +3,7 @@ import { Image, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 
-import registerImg from '../../assets/registerImg.png';
+import default_userPhoto from '../../assets/default_userPhoto.png';
 import { useNavigation } from '@react-navigation/native';
 import metrics from '../../styles/metrics';
 
@@ -14,7 +14,7 @@ export default function CustomDrawer(props) {
         <View style={styles.container}>
             <DrawerContentScrollView {...props} >
                 <TouchableOpacity style={styles.userArea} onPress={() => navigation.navigate("UserAccount")} >
-                    <Image style={styles.userImg} source={registerImg} />
+                    <Image style={styles.userImg} source={default_userPhoto} />
 
                     <View style={styles.userInfos}>
                         <Text style={styles.userName}>Gustavo Brito </Text>

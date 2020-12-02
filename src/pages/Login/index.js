@@ -33,19 +33,25 @@ function Login() {
                 style={styles.input} 
                 placeholder="Login:" 
                 placeholderTextColor={'#FFF'} 
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
             />
 
             <TextInput 
                 style={styles.input} 
                 placeholder="Senha:" 
                 placeholderTextColor={'#FFF'} 
+                autoCapitalize="none"
+                autoCorrect={false}
+                secureTextEntry={true}
             />
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Drawer')}>
                 <Text style={styles.buttonText}> Entrar </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Drawer')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.textRegister} >
                     Ainda não é cadastrado? Registre-se
                 </Text>
@@ -78,7 +84,6 @@ const styles = StyleSheet.create({
 
         backgroundColor: metrics.colorYellow,
         
-        paddingVertical: 5,
         paddingHorizontal: 10,
 
         borderColor: 'transparent',

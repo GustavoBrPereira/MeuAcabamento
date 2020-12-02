@@ -3,7 +3,7 @@ import { Image, Keyboard, ScrollView, StatusBar, TouchableOpacity,
     StyleSheet, TextInput, Dimensions, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import registerImg from '../../assets/registerImg.png';
+import default_userPhoto from '../../assets/default_userPhoto.png';
 import metrics from '../../styles/metrics';
 import Menu from '../../components/Menu';
 
@@ -32,13 +32,13 @@ function UserAccount() {
         <>
         <StatusBar backgroundColor="#ff13a6" barStyle="light-content" />
 
-            <Menu title="Conta" icon="arrow-back" /> 
+            <Menu title="Perfil" icon="arrow-back" /> 
 
             <ScrollView style={styles.container} onPress={Keyboard.dismiss} >
 
                 <TouchableOpacity style={styles.containerUserImg}>
                     <Image 
-                        source={registerImg}
+                        source={male_avatar}
                         style={styles.userImg} 
                     />
                 </TouchableOpacity>
@@ -219,11 +219,7 @@ function UserAccount() {
                     autoComplete='off'
                     autoCorrect={false}
                 />
-
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}> Atualizar </Text>
-                </TouchableOpacity>
-
+                
                 <TouchableOpacity style={styles.buttonDelete}>
                     <Text style={styles.buttonText}> Excluir Conta </Text>
                 </TouchableOpacity>
